@@ -46,13 +46,13 @@ def sentence_with_genre(sentence, genre):
 STATIC_PATH = os.path.join(os.path.dirname(__file__), 'static')
 
 
-@route('/static/<path:path>', method='GET')
+@route('/public/<path:path>', method='GET')
 def static_dir(path):
-    return static_file(path, STATIC_PATH)
+    return static_file(path, os.path.join(STATIC_PATH, 'public'))
 
 
 @route('/')
-def home_page(path):
+def home_page():
     return static_file('index.html', STATIC_PATH)
 
 

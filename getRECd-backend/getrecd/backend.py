@@ -7,7 +7,7 @@ from .credentials import credentials
 sp = spotipy.Spotify(client_credentials_manager=credentials)
 
 PAGE_SIZE = 50
-MAX_PAGE_NUM = 10
+MAX_PAGE_NUM = 100
 
 
 def magic_search(q: str, f, limit: int = 50,
@@ -41,18 +41,19 @@ def get_songs_with_letter(letter: str, genre: typing.Optional[str] = None):
 
     # build the search string we want to have
     if genre is not None:
-        search = "genre:{} AND title:{}*".format(genre, letter[0])
+        search = "genre:{} AND name:{}*".format(genre, letter[0])
     else:
-        search = "title:{}*".format(genre, letter[0])
+        search = "name:{}*".format(letter[0])
 
     # and do a lazy search on all the attributes
     for t in magic_search(search,
-                          lambda t: t['name'].lower().startswith(letter[0]), 50,
-                          10):
+                          lambda t: t['name'].lower().startswith(letter[0]),
+                          PAGE_SIZE, MAX_PAGE_NUM):
         yield t
 
 
 ALPHABET = "abcdefghijklmnopqrstuvwxyz"
+
 
 def get_songs_with_sentence(sentence: str, genre: typing.Optional[str] = None):
     # keep a record of song ids and names we have already picked
@@ -78,8 +79,9 @@ def get_songs_with_sentence(sentence: str, genre: typing.Optional[str] = None):
                 try:
                     song = next(cache[s])
                 except StopIteration:
-                    raise ValueError(
-                        'Did not find a song for character {}'.format(s))
+                    break
+                    #raise ValueError(
+                    #    'Did not find a song for character {}'.format(s))
 
                 # check if we have the name of id already selected previously
                 has_song_id = song['id'] in song_ids
