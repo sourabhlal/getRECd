@@ -1,8 +1,61 @@
-<html>
-    <head>
-        <title>Hello world</title>
-    </head>
-<body>
-Hello world
-</body>
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+
+          getRECd -- Spotify Playlist Generator
+
+    </title>
+
+    <!-- all the styling -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="/public/materialize/css/materialize.min.css"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="/public/font-awesome-4.7.0/css/font-awesome.min.css"  media="screen,projection"/>
+
+    <style>
+      html, body {height: 100%; }
+
+      body {
+        background-image: linear-gradient(rgb(49, 78, 104), rgb(4, 7, 10) 85%);
+      }
+    </style>
+
+</head>
+  <body class="white-text">
+    <div class="container">
+      <h1>getRECd</h1>
+
+      <div class="row">
+        <form class="col s12" id="search">
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="sentence" type="text">
+              <label for="sentence">Sentence</label>
+            </div>
+          </div>
+          <div class="row">
+            <button class="btn" style="background-color: #1db954; " type="submit" id="build" name="action">
+                Build
+                <i class="material-icons right">build</i>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div id="output" class="white-text">
+        Start a search by clicking the play button
+      </div>
+
+    </div>
+
+    <!-- all the scripts -->
+    <script src="/public/js/jquery-3.2.1.min.js"></script>
+    <script src="/public/materialize/js/materialize.min.js"></script>
+    <script src="/public/js/app.js"></script>
+
+    </body>
 </html>
