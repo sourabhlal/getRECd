@@ -1,0 +1,15 @@
+{
+  "name": "Context Menus Sample",
+  "description": "Shows some of the features of the Context Menus API",
+  "version": "0.6",
+  "permissions": ["contextMenus","tabs","http://sourabhs.space/"],
+  "background": {
+    "scripts": ["sample.js"]
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "manifest_version": 2
+}
