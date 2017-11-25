@@ -16,13 +16,16 @@ def getSentiment(text):
             emotion=EmotionOptions(document=True),
             sentiment=SentimentOptions(document=True)))
 
+    report = {}
     positivity = response["sentiment"]["document"]["score"] # Valence — The higher the value, the more positive mood for the song.
-    anger = response["emotion"]["document"]["emotion"]["anger"] # Loudness — The higher the value, the louder the song (in dB).
-    joy = response["emotion"]["document"]["emotion"]["joy"] # Danceability — The higher the value, the easier it is to dance to this song.
-    fear = response["emotion"]["document"]["emotion"]["fear"] # Beats Per Minute (BPM) — The tempo of the song.
-    sadness = response["emotion"]["document"]["emotion"]["sadness"] # Acousticness — The higher the value the more acoustic the song is.
-
-    print(positivity,anger, joy, fear, sadness)
+    positivity +=1
+    report["positivity"] = positivity/2
+    report["anger"] = response["emotion"]["document"]["emotion"]["anger"] # Loudness — The higher the value, the louder the song (in dB).
+    report["joy"] = response["emotion"]["document"]["emotion"]["joy"] # Danceability — The higher the value, the easier it is to dance to this song.
+    report["fear"] = response["emotion"]["document"]["emotion"]["fear"] # Beats Per Minute (BPM) — The tempo of the song.
+    report["sadness"] = response["emotion"]["document"]["emotion"]["sadness"] # Acousticness — The higher the value the more acoustic the song is.
+    print(report)
+    return(report)
 
 text = 'Why would Kim Jong-un insult me by calling me "old," when I would NEVER call him "short and fat?" Oh well, I try so hard to be his friend - and maybe someday that will happen!'
 getSentiment(text)
