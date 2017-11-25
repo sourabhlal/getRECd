@@ -39,15 +39,17 @@ def magic_search(q: str, f, limit: int = 50,
 def get_songs_with_letter(letter: str, genre: typing.Optional[str] = None):
     """ Gets a spotify song starting with the given letter """
 
+    letter = letter[0].lower()
+
     # build the search string we want to have
     if genre is not None:
-        search = "genre:{} AND name:{}*".format(genre, letter[0])
+        search = "genre:{} AND name:{}*".format(genre, letter)
     else:
-        search = "name:{}*".format(letter[0])
+        search = "name:{}*".format(letter)
 
     # and do a lazy search on all the attributes
     for t in magic_search(search,
-                          lambda t: t['name'].lower().startswith(letter[0]),
+                          lambda t: t['name'].lower().startswith(letter),
                           PAGE_SIZE, MAX_PAGE_NUM):
         yield t
 
@@ -64,6 +66,7 @@ def get_songs_with_sentence(sentence: str, genre: typing.Optional[str] = None):
 
     # iterate over each character in the current sentence
     for s in sentence:
+        s = s.lower()
         if s in ALPHABET:
 
             # if we already requested songs for this letter in the past,
