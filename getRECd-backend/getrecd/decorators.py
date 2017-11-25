@@ -2,6 +2,10 @@ from bottle import response
 from json import dumps
 
 
+import collections
+import functools
+
+
 def json(f):
     """ A decorator that allows a bottle function to return a json object
     with the right content type. """
@@ -33,3 +37,18 @@ def safe(f):
 def safe_json(f):
     """ A combination of the safe and json decorators """
     return json(safe(f))
+
+class memoized(object):
+    def __init__(self, fn):
+        self.fn = fn
+        self.memo = {}
+    def __call__(self, *args, **kwargs):
+        hargs = (args, tuple(kwargs.items()))
+
+        # HACK: if we have more than 1000 items, clear the cache
+        if len(self.memo) > 1000:
+            self.memo = {}
+
+        if hargs not in self.memo:
+            self.memo[hargs] = self.fn(*args, **kwargs)
+        return self.memo[hargs]

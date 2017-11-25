@@ -1,6 +1,6 @@
 from bottle import route, run, static_file
 from getrecd import backend
-from getrecd.decorators import safe_json
+from getrecd.decorators import safe_json, memoized
 import os
 import sys
 
@@ -28,6 +28,7 @@ def character_with_genre(char, genre):
 
 @route('/api/sentence/<sentence>/', method='GET')
 @safe_json
+@memoized
 def sentence(sentence):
     return dict(items=list(backend.get_songs_with_sentence(sentence)))
 

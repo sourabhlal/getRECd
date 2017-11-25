@@ -1,0 +1,8 @@
+html, body {height: 100%; }
+
+.spotify-collection { background-color: black; }
+
+.spotify-color { color: #1db954; }
+.spotify-btn, .spotify-btn:hover {background-color: #1db954; }
+
+body { background-image: linear-gradient(rgb(49, 78, 104), rgb(4, 7, 10) 85%); }
