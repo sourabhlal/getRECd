@@ -17,7 +17,7 @@ function genericOnClick(context) {
     chrome.tabs.executeScript( {
       code: "window.getSelection().toString();"
     }, function(selection) {
-    var newURL = "http://localhost:8080/api/sentence/".concat(selection).concat("/");
+    var newURL = "http://localhost:8080/#".concat(selection);
     chrome.tabs.create({ url: newURL });
     });
 }
