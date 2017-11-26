@@ -1,5 +1,3 @@
-import typing
-import math
 
 import spotipy
 from .credentials import credentials, ibm
