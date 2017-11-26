@@ -28,6 +28,7 @@ def safe(f):
             rv['success'] = True
             return rv
         except Exception as e:
+            raise e
             response.status = 500
             return dict(success=False, message=str(e))
 
