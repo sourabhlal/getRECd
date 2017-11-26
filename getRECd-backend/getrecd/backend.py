@@ -15,8 +15,7 @@ PAGE_SIZE = 50
 MAX_PAGE_NUM = 100
 
 
-def magic_search(q: str, f, limit: int = 50,
-                 max_page_num: int = 10):
+def magic_search(q, f, limit=50, max_page_num=10):
     """ Searches for a set of tracks given a filter f and a query q. """
 
     tc = 0
@@ -59,7 +58,7 @@ def sort_iterable_chunks(iterable, sort, chunk_size=10):
             yield item
 
 
-def get_songs_with_letter(letter: str, genre: typing.Optional[str] = None):
+def get_songs_with_letter(letter, genre=None):
     """ Gets a spotify song starting with the given letter """
 
     letter = letter[0].lower()
@@ -80,7 +79,7 @@ def get_songs_with_letter(letter: str, genre: typing.Optional[str] = None):
 ALPHABET = "abcdefghijklmnopqrstuvwxyz"
 
 
-def get_songs_with_sentence(sentence: str, genre: typing.Optional[str] = None):
+def get_songs_with_sentence(sentence, genre=None):
     # keep a record of song ids and names we have already picked
     song_ids = []
     song_names = []
@@ -150,11 +149,11 @@ def get_sentiment(text):
         # => valence
         'positivity': (response["sentiment"]["document"]["score"] + 1) / 2,
         # => loundness
-        'anger': -60*response["emotion"]["document"]["emotion"]["anger"],
+        'anger': -60 * response["emotion"]["document"]["emotion"]["anger"],
         # => danceability
         'joy': response["emotion"]["document"]["emotion"]["joy"],
         # => bpm
-        'fear': 200*response["emotion"]["document"]["emotion"]["fear"],
+        'fear': 200 * response["emotion"]["document"]["emotion"]["fear"],
         # => acoustincess
         'sadness': response["emotion"]["document"]["emotion"]["sadness"]
     }
@@ -162,17 +161,24 @@ def get_sentiment(text):
 
 def sort_by_sentiment(sp, sentiment):
     print(sentiment)
+
     def sort(items):
         features = sp.audio_features(map(lambda t: t['id'], items))
         joined = zip(features, items)
 
-        joined = sorted(joined, key=lambda fi: abs(sentiment['anger'] - (fi[0]['loudness'])))
-        joined = sorted(joined, key=lambda fi: abs(sentiment['joy'] - fi[0]['danceability']))
-        joined = sorted(joined, key=lambda fi: abs(sentiment['fear'] - fi[0]['tempo']))
-        joined = sorted(joined, key=lambda fi: abs(sentiment['sadness'] - fi[0]['acousticness']))
-        joined = sorted(joined, key=lambda fi: abs(sentiment['positivity'] - fi[0]['valence']))
+        joined = sorted(joined, key=lambda fi: abs(
+            sentiment['anger'] - (fi[0]['loudness'])))
+        joined = sorted(joined, key=lambda fi: abs(
+            sentiment['joy'] - fi[0]['danceability']))
+        joined = sorted(joined,
+                        key=lambda fi: abs(sentiment['fear'] - fi[0]['tempo']))
+        joined = sorted(joined, key=lambda fi: abs(
+            sentiment['sadness'] - fi[0]['acousticness']))
+        joined = sorted(joined, key=lambda fi: abs(
+            sentiment['positivity'] - fi[0]['valence']))
 
         result = map(lambda fi: fi[1], joined)
         print(list(joined)[0][0])
         return result
+
     return sort
