@@ -12,19 +12,12 @@
     </title>
 
     <!-- all the styling -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <link type="text/css" rel="stylesheet" href="/public/materialize/css/materialize.min.css"  media="screen,projection"/>
     <link type="text/css" rel="stylesheet" href="/public/font-awesome-4.7.0/css/font-awesome.min.css"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="/public/css/style.css" />
+  </head>
 
-    <style>
-      html, body {height: 100%; }
-
-      body {
-        background-image: linear-gradient(rgb(49, 78, 104), rgb(4, 7, 10) 85%);
-      }
-    </style>
-
-</head>
   <body class="white-text">
     <div class="container">
       <h1>getRECd</h1>
@@ -38,16 +31,21 @@
             </div>
           </div>
           <div class="row">
-            <button class="btn" style="background-color: #1db954; " type="submit" id="build" name="action">
+            <button class="btn spotify-btn" type="submit" id="build" name="action">
                 Build
                 <i class="material-icons right">build</i>
+            </button>
+
+            <button class="btn spotify-btn" disabled="disabled" id="save" name="action">
+                Save as playlist
+                <i class="material-icons right">save</i>
             </button>
           </div>
         </form>
       </div>
 
       <div id="output" class="white-text">
-        Start a search by clicking the play button
+        Start a search by clicking the play button.
       </div>
 
     </div>
@@ -55,7 +53,7 @@
     <!-- all the scripts -->
     <script src="/public/js/jquery-3.2.1.min.js"></script>
     <script src="/public/materialize/js/materialize.min.js"></script>
-    <script src="/public/js/app.js"></script>
+    <script src="/public/js/index.js"></script>
 
     </body>
 </html>
