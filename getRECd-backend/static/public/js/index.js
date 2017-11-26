@@ -1,5 +1,4 @@
 var SPOTIFY_CLIENT_ID = "1c60ef76b2504eb58583af433ab30bfe";
-var SPOTIFY_AUTH_TOKEN = "";
 
 //
 // UTILS
@@ -146,7 +145,10 @@ function handle_search(text){
     location.hash = '#'+encodeURIComponent(text);
 
     // setup the laoding text
-    $('#output').text('Retrieving results...');
+    $('#output').empty().append(
+        $('<div class="center-align">').text('Looking for songs'),
+        $('<div class="progress">').append($('<div class="indeterminate">'))
+    );
 
 
     get_songs_by_sentence(text, undefined, function(results){
@@ -177,7 +179,7 @@ function handle_create_playlist(){
         "&response_type=token" +
         "&redirect_uri=" + redirect_uri +
         "&state=" + encodeURIComponent(state) +
-        "&scopes=playlist-modify-private" +
+        "&scope=playlist-modify-private" +
         "&show_dialog=true";
 
     location.href=url;
@@ -193,8 +195,15 @@ function handle_playlist_two(hash){
     // block everything
     is_blocked = true;
     $("#build, #save").attr('disabled', true);
-    $('#output').text('Creating your Playlist, please wait ...');
 
+    // set a progress bar
+    $('#output').empty().append(
+        $('<div class="center-align">').text('Creating your Playlist'),
+        $('<div class="progress">').append($('<div class="indeterminate">'))
+    );
+
+    // we are going to use this to get a bunch of information later
+    var sp = new SpotifyWebApi();
 
     // set the state based on the hash
     var parts = hash.split('&');
@@ -202,29 +211,57 @@ function handle_playlist_two(hash){
     for(var i = 0; i < parts.length; i++){
         part = parts[i].split('=');
         switch(part[0]){
-            // store the auth token
+            // storing the access token
             case 'access_token':
-                SPOTIFY_AUTH_TOKEN = part[1];
+                sp.setAccessToken(part[1]);
                 break;
 
-            // store the state
+            // loading the current state
             case 'state':
-                loadState(part[1]); // load the state
+                loadState(part[1]);
                 break;
             default:
                 break;
         }
     }
 
-    // load state
-    $('#output').text(SPOTIFY_AUTH_TOKEN);
+
+
+    // get the current users API
+    sp.getMe(function(err, udata){
+        sp.createPlaylist(udata['id'], {
+            'public': false,
+            'name': search
+        }, function(err, pdata){
+            sp.addTracksToPlaylist(udata['id'], pdata['id'], songs.map(function(e, i, a){return e['uri']; }), function (err, _) {
+
+                // add an iframe to it
+                $("#output").empty()
+
+                .append(
+                    $('<div class="center-align">').append(
+                        $("<iframe>").attr({
+                            'src': 'https://open.spotify.com/embed?uri=' + pdata['uri'],
+                            'frameborder': '0',
+                            'allowtransparency': 'true',
+                        })
+                    )
+                )
+                .append(render_into_list(songs));
+
+                // and unblock
+                is_blocked = false;
+                $("#build, #save").removeAttr('disabled');
+            })
+        })
+    })
 
 }
 
 
 function handle_hash(hash){
     //
-    if(hash.startsWith('access_token=')){
+    if(hash.startsWith('access_token=')) {
         handle_playlist_two(hash)
     } else {
         handle_search(decodeURIComponent(hash));
